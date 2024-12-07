@@ -1,0 +1,48 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 01:03:46 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_static_local.sh.source
+
+show_help() {
+    cat << EOF
+Static SIF Container Operations
+
+Commands:
+ashell  - Shell into static container
+apy     - Run Python in container
+aipy    - Run IPython in container
+ajpy    - Run Jupyter in container
+
+Using container at: $APPTAINER_STATIC_IMAGE_LOCAL_PATH
+EOF
+}
+
+# Static SIF container operations
+ashell() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashell - Shell into static container" && return
+    ee "apptainer shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_LOCAL_PATH"
+}
+
+# Python-related shortcuts
+_apy() {
+    [[ "$1" == "-h" ]] && echo "Usage: _apy BINARY [ARGS] - Run binary in static container" && return
+    BIN=$1
+    shift
+    ee "apptainer exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_LOCAL_PATH $BIN $@"
+}
+
+apy() {
+    [[ "$1" == "-h" ]] && echo "Usage: apy [ARGS] - Run Python in static container" && return
+    _apy python "$@"
+}
+
+aipy() {
+    [[ "$1" == "-h" ]] && echo "Usage: aipy [ARGS] - Run IPython in static container" && return
+    _apy ipython "$@"
+}
+
+ajpy() {
+    [[ "$1" == "-h" ]] && echo "Usage: ajpy [ARGS] - Run Jupyter in static container" && return
+    _apy jupyter-notebook "$@"
+}
+
+# EOF

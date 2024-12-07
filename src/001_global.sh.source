@@ -1,0 +1,98 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 01:05:12 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_global.sh.source
+
+show_help() {
+    cat << EOF
+Global Container Operations
+
+Static Image Commands:
+ashellglobal  - Shell into global SIF
+apyglobal     - Run Python
+aipyglobal    - Run IPython
+ajpyglobal    - Run Jupyter
+
+Sandbox Commands:
+ashellsandglobal  - Shell into global sandbox
+apysandglobal     - Run Python in sandbox
+aipysandglobal    - Run IPython in sandbox
+ajpysandglobal    - Run Jupyter in sandbox
+
+All commands use container at $APPTAINER_STATIC_IMAGE_GLOBAL_PATH
+EOF
+}
+
+apptainer_shell_global() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashellglobal - Shell into global SIF container" && return
+    ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_GLOBAL_PATH"
+}
+
+_apptainer_py_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: _apptainer_py_global BINARY [ARGS] - Run binary in global container" && return
+    BIN=$1
+    shift
+    ee "singularity exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_GLOBAL_PATH $BIN $@"
+}
+
+# Add help flags to each function
+apptainer_py_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: apyglobal - Run Python in global container" && return
+    _apptainer_py_global python
+}
+
+apptainer_ipython_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: aipyglobal - Run IPython in global container" && return
+    _apptainer_py_global ipython
+}
+
+apptainer_jupyter_notebook_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: ajpyglobal - Run Jupyter in global container" && return
+    _apptainer_py_global jupyter-notebook
+}
+
+apptainer_shell_sand_global() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashellsandglobal - Shell into global sandbox container" && return
+    ee "unset APPTAINER_BIND; singularity shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH"
+}
+
+#### Working with sandbox containers, located as $GLOBAL/.singularity/sandbox in default
+apptainer_shell_sand_global() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashellsandglobal - Shell into global sandbox container" && return
+    ee "unset APPTAINER_BIND; singularity shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH"
+}
+
+_apptainer_py_sand_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: _apptainer_py_sand_global BINARY [ARGS] - Run binary in global sandbox" && return
+    BIN=$1
+    shift
+    ee "singularity exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH $BIN $@"
+}
+
+apptainer_py_sand_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: apysandglobal - Run Python in global sandbox" && return
+    _apptainer_py_sand_global python
+}
+
+apptainer_ipython_sand_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: aipysandglobal - Run IPython in global sandbox" && return
+    _apptainer_py_sand_global ipython
+}
+
+apptainer_jupyter_notebook_sand_global () {
+    [[ "$1" == "-h" ]] && echo "Usage: ajpysandglobal - Run Jupyter in global sandbox" && return
+    _apptainer_py_sand_global jupyter-notebook
+}
+
+
+# Aliases
+alias ashellglobal='apptainer_shell_global'
+alias apyglobal='apptainer_py_global'
+alias aipyglobal='apptainer_ipython_global'
+alias ajpyglobal='apptainer_jupyter_notebook_global'
+
+alias ashellsandglobal='apptainer_shell_sand_global'
+alias apysandglobal='apptainer_py_sand_global'
+alias aipysandglobal='apptainer_ipython_sand_global'
+alias ajpysandglobal='apptainer_jupyter_notebook_sand_global'
+
+# EOF

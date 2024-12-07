@@ -1,6 +1,38 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 00:11:34 (ywatanabe)"
-# File: ./.dotfiles/.bash.d/all/030_apptainer/001_build.sh.source
+# Time-stamp: "2024-12-08 00:58:29 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_build.sh.source
+
+show_help() {
+    cat << EOF
+Apptainer Build Functions
+
+Internal:
+_apptainer_build DEF_FILE OUTPUT LOG [OPTIONS]
+    Executes apptainer build with logging
+
+Core Functions:
+apptainer_build_sandbox_from_sif
+    Converts SIF to sandbox format
+    Example: apptainer_build_sandbox_from_sif
+    Uses: ./apptainer/image.sif -> ./apptainer/image.sandbox
+
+apptainer_build_sif_from_sandbox
+    Converts sandbox to SIF format
+    Example: apptainer_build_sif_from_sandbox
+    Uses: ./apptainer/image.sandbox -> ./apptainer/image.sif
+
+Definition File Functions:
+apptainer_build_sif_from_def DEF_FILE [OPTIONS]
+    Builds SIF from definition file
+    Example: apptainer_build_sif_from_def recipe.def --fakeroot --remote
+    Output: recipe.sif, recipe.log
+
+apptainer_build_sandbox_from_def DEF_FILE [OPTIONS]
+    Builds sandbox from definition file
+    Example: apptainer_build_sandbox_from_def recipe.def --fakeroot --remote
+    Output: recipe.sandbox, recipe_sandbox.log
+EOF
+}
 
 ################################################################################
 # Internal build function
@@ -20,27 +52,35 @@ _apptainer_build() {
 ################################################################################
 
 apptainer_build_sandbox_from_sif() {
-    # Example:
-    #   apptainer_build_sandbox_from_sif  # Builds sandbox from ./apptainer/image.sif
-    local LOG_PATH="${APPTAINER_SANDBOX_SIF_CD_PATH%.*}_from_sif.log"
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        echo "Usage: apptainer_build_sandbox_from_sif"
+        echo "Converts SIF to sandbox format using ./apptainer/image.sif"
+        return 0
+    fi
 
-    if [ -f $APPTAINER_STATIC_SIF_CD_PATH ]; then
-        ee "apptainer build --sandbox $APPTAINER_SANDBOX_SIF_CD_PATH $APPTAINER_STATIC_SIF_CD_PATH 2>&1 | tee ${LOG_PATH}"
+    local LOG_PATH="${APPTAINER_SANDBOX_IMAGE_LOCAL_PATH%.*}_from_sif.log"
+
+    if [ -f $APPTAINER_STATIC_IMAGE_LOCAL_PATH ]; then
+        ee "apptainer build --sandbox $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH $APPTAINER_STATIC_IMAGE_LOCAL_PATH 2>&1 | tee ${LOG_PATH}"
     else
-        echo "Error: $APPTAINER_STATIC_SIF_CD_PATH not found"
+        echo "Error: $APPTAINER_STATIC_IMAGE_LOCAL_PATH not found"
         return 1
     fi
 }
 
 apptainer_build_sif_from_sandbox() {
-    # Example:
-    #   apptainer_build_sif_from_sandbox  # Builds SIF from ./apptainer/image.sandbox
-    local LOG_PATH="${APPTAINER_STATIC_SIF_CD_PATH%.*}_from_sandbox.log"
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        echo "Usage: apptainer_build_sandbox_from_sif"
+        echo "Converts sandbox to SIF format using ./apptainer/image.sandbox"
+        return 0
+    fi
 
-    if [ -d $APPTAINER_SANDBOX_SIF_CD_PATH ]; then
-        ee "apptainer build $APPTAINER_STATIC_SIF_CD_PATH $APPTAINER_SANDBOX_SIF_CD_PATH 2>&1 | tee ${LOG_PATH}"
+    local LOG_PATH="${APPTAINER_STATIC_IMAGE_LOCAL_PATH%.*}_from_sandbox.log"
+
+    if [ -d $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH ]; then
+        ee "apptainer build $APPTAINER_STATIC_IMAGE_LOCAL_PATH $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH 2>&1 | tee ${LOG_PATH}"
     else
-        echo "Error: $APPTAINER_SANDBOX_SIF_CD_PATH not found"
+        echo "Error: $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH not found"
         return 1
     fi
 }
@@ -50,8 +90,13 @@ apptainer_build_sif_from_sandbox() {
 ################################################################################
 
 apptainer_build_sif_from_def() {
-    # Example:
-    # $ apptainer_build_sif_from_def recipe.def --fakeroot --remote
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        echo "Usage: apptainer_build_sif_from_def DEFINITION_FILE [OPTIONS]"
+        echo "Builds SIF from definition file"
+        echo "Example: apptainer_build_sif_from_def recipe.def --fakeroot --remote"
+        return 0
+    fi
+
     DEFINITION_FILE=$1
     shift
     OPTIONS="$@"
@@ -64,8 +109,13 @@ apptainer_build_sif_from_def() {
 }
 
 apptainer_build_sandbox_from_def() {
-    # Example:
-    # $ apptainer_build_sandbox_from_def recipe.def --fakeroot --remote
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        echo "Usage: apptainer_build_sandbox_from_def DEFINITION_FILE [OPTIONS]"
+        echo "Builds sandbox from definition file"
+        echo "Example: apptainer_build_sandbox_from_def recipe.def --fakeroot --remote"
+        return 0
+    fi
+
     DEFINITION_FILE=$1
     shift
     OPTIONS="$@"

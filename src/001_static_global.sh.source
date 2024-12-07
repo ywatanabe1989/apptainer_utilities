@@ -1,12 +1,12 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 00:41:22 (ywatanabe)"
-# File: ./.dotfiles/.bash.d/all/030_apptainer/src/001_static_home.sh.source
+# Time-stamp: "2024-12-08 01:02:34 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_static_global.sh.source
 
-apptainer_shell_home() { ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_SIF_HOME_PATH"; }
+apptainer_shell_home() { ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_HOME_PATH"; }
 _apptainer_py_home () {
     BIN=$1
     shift
-    ee "singularity exec --fakeroot --cleanenv --nv $APPTAINER_STATIC_SIF_HOME_PATH $BIN $@"
+    ee "singularity exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_HOME_PATH $BIN $@"
 }
 apptainer_py_home () { _apptainer_py_home python; }
 apptainer_ipython_home () { _apptainer_py_home ipython; }
