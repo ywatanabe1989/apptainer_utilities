@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 00:28:08 (ywatanabe)"
-# File: ./.dotfiles/.bash.d/all/030_apptainer/entry.sh
+# Time-stamp: "2024-12-08 00:49:57 (ywatanabe)"
+# File: ./apptainer_utilities/apptainer_utilities.sh.source
 
 ################################################################################
 ## Installation
