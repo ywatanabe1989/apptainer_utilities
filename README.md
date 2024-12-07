@@ -1,7 +1,7 @@
 <!-- ---
-!-- title: ./.dotfiles/.bash.d/all/030_apptainer/README.md
+!-- title: ./apptainer_utilities/README.md
 !-- author: ywatanabe
-!-- date: 2024-12-08 00:41:43
+!-- date: 2024-12-08 00:51:16
 !-- --- -->
 
 
@@ -12,13 +12,13 @@ Collection of shell utilities for managing Apptainer/Singularity containers.
 ## Installation
 
 #### Apptainer itself
-0. source src/000_install_apptainer.sh && install_apptainer
-0. source src/000_enable_fakeroot.sh && apptainer_enable_fakeroot
+1. `$ source src/000_install_apptainer.sh && install_apptainer`
+2. `$ source src/000_enable_fakeroot.sh && apptainer_enable_fakeroot`
 
 #### Apptainer Utilities
 
 ``` bash
-1. `$ source apptainer_utilities.sh.source`
+1. `$ source /path/to/apptainer_utilities/entry.sh.source` # in ~/.bashrc
 
 2. Place containers in:
    - Global: `$HOME/.apptainer/`
@@ -76,7 +76,7 @@ project_B/.apptainer/
 | | `abuild_sandbox_from_sif` | Convert SIF to sandbox | `abuild_sandbox_from_sif image.sif` |  
 | | `abuild_sif_from_sandbox` | Convert sandbox to SIF | `abuild_sif_from_sandbox image.sandbox` |
 | **Development** |
-| | `apptainer_dev` | Interactive dev environment | `apptainer_dev project_name` |
+| | `adev` | Interactive dev environment | `adev project_name` |
 | **Static SIF** |
 | | `ashell` | Shell into SIF | `ashell image.sif` |
 | | `apy` | Run Python | `apy script.py` |

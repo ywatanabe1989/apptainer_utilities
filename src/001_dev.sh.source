@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 00:01:29 (ywatanabe)"
-# File: ./.dotfiles/.bash.d/all/030_apptainer/001_build_dev.sh
+# Time-stamp: "2024-12-08 00:45:35 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_dev.sh.source
 
 ################################################################################
 # Apptainer Development Environment
@@ -140,5 +140,6 @@ apptainer_dev() {
     done
 }
 
+alias adev=apptainer_dev
 
 # EOF
