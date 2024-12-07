@@ -1,0 +1,52 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 01:05:12 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_sandbox_local.sh.source
+
+show_help() {
+    cat << EOF
+Sandbox Container Operations
+
+Commands:
+ashell_sand    - Shell into sandbox container
+ashell_sand_w  - Shell into writable sandbox container
+apy_sand      - Run Python in sandbox
+aipy_sand     - Run IPython in sandbox
+ajpy_sand     - Run Jupyter in sandbox
+
+Using container at: $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH
+EOF
+}
+
+# Sandbox container operations
+ashell_sand() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashell_sand - Shell into sandbox container" && return
+    ee "apptainer shell -f -c --nv $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
+}
+
+ashell_sand_w() {
+    [[ "$1" == "-h" ]] && echo "Usage: ashell_sand_w - Shell into writable sandbox container" && return
+    ee "unset APPTAINER_BIND; apptainer shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
+}
+
+_apy_sand() {
+    [[ "$1" == "-h" ]] && echo "Usage: _apy_sand BINARY [ARGS] - Run binary in sandbox container" && return
+    BIN=$1
+    shift
+    ee "apptainer exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH $BIN $@"
+}
+
+# Python-related shortcuts for sandbox
+apy_sand() {
+    [[ "$1" == "-h" ]] && echo "Usage: apy_sand [ARGS] - Run Python in sandbox" && return
+    _apy_sand python "$@"
+}
+
+aipy_sand() {
+    [[ "$1" == "-h" ]] && echo "Usage: aipy_sand [ARGS] - Run IPython in sandbox" && return
+    _apy_sand ipython "$@"
+}
+
+ajpy_sand() {
+    [[ "$1" == "-h" ]] && echo "Usage: ajpy_sand [ARGS] - Run Jupyter in sandbox" && return
+    _apy_sand jupyter-notebook "$@"
+}

@@ -1,7 +1,7 @@
 <!-- ---
 !-- title: ./apptainer_utilities/README.md
 !-- author: ywatanabe
-!-- date: 2024-12-08 00:51:16
+!-- date: 2024-12-08 01:04:51
 !-- --- -->
 
 
@@ -25,7 +25,7 @@ Collection of shell utilities for managing Apptainer/Singularity containers.
    - Project-specific: `./.apptainer/`
 
 2. Store images under:
-   - APPTAINER_HOME_DIR (~/.apptainer/)
+   - APPTAINER_GLOBAL_DIR (~/.apptainer/)
    - APPTAINER_WORK_DIR (./.apptainer/)
 ```
 
@@ -92,7 +92,7 @@ project_B/.apptainer/
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `APPTAINER_HOME_DIR` | Global container dir | `$HOME/.apptainer/` |
+| `APPTAINER_GLOBAL_DIR` | Global container dir | `$HOME/.apptainer/` |
 | `APPTAINER_LOCAL_DIR` | Local container dir | `./.apptainer/` |
 | `APPTAINER_RUNTIME_OPTIONS` | Default runtime options | `"--fakeroot --cleanenv --nv"` |
 
