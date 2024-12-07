@@ -1,0 +1,34 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 00:28:08 (ywatanabe)"
+# File: ./.dotfiles/.bash.d/all/030_apptainer/entry.sh
+
+################################################################################
+## Installation
+##
+## 1. Source this file in ~/.bashrc
+## 2. Store containers under $HOME/.apptainer/ (global) or ./.apptainer/ (local)
+##
+## Container structure:
+## .apptainer/
+## ├── image.sif      # Static container (symlink or file)
+## └── image.sandbox  # Sandbox container (symlink or directory)
+##
+## Dependencies:
+## - Apptainer/Singularity
+## - Basic Unix tools (sed, grep, etc.)
+################################################################################
+
+# Source all component files
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+source "${SCRIPT_DIR}/src/001_utils.sh.source"
+source "${SCRIPT_DIR}/src/001_dev.sh.source"
+source "${SCRIPT_DIR}/src/001_envs_user.sh.source"
+source "${SCRIPT_DIR}/src/001_envs_apptainer.sh.source"
+source "${SCRIPT_DIR}/src/001_build.sh.source"
+source "${SCRIPT_DIR}/src/001_static.sh.source"
+source "${SCRIPT_DIR}/src/001_static_home.sh.source"
+source "${SCRIPT_DIR}/src/001_sandbox.sh.source"
+source "${SCRIPT_DIR}/src/001_sandbox_home.sh.source"
+source "${SCRIPT_DIR}/src/001_home.sh.source"
+
+# EOF

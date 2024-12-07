@@ -1,0 +1,25 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 00:41:23 (ywatanabe)"
+# File: ./.dotfiles/.bash.d/all/030_apptainer/src/001_envs_user.sh.source
+
+# Apptainer binary directory
+# export APPTAINER_BIN_DIR="$HOME/.apptainer/.bin"
+# mkdir -p $APPTAINER_BIN_DIR
+
+# Directory structure
+export APPTAINER_HOME_DIR="$HOME/.apptainer/"
+export APPTAINER_LOCAL_DIR="./.apptainer/"
+export APPTAINER_STATIC_SIF="image.sif"
+export APPTAINER_SAND_SIF="image.sandbox"
+
+# Derived paths
+export APPTAINER_STATIC_SIF_HOME_PATH=${APPTAINER_HOME_DIR}${APPTAINER_STATIC_SIF}
+export APPTAINER_STATIC_SIF_CD_PATH=${APPTAINER_LOCAL_DIR}${APPTAINER_STATIC_SIF}
+export APPTAINER_SAND_SIF_HOME_PATH=${APPTAINER_HOME_DIR}${APPTAINER_SAND_SIF}
+export APPTAINER_SAND_SIF_CD_PATH=${APPTAINER_LOCAL_DIR}${APPTAINER_SAND_SIF}
+
+# Common options
+export APPTAINER_RUNTIME_OPTIONS="--fakeroot --cleanenv --nv"
+
+
+# EOF

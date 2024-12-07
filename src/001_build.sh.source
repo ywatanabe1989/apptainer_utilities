@@ -1,0 +1,83 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 00:11:34 (ywatanabe)"
+# File: ./.dotfiles/.bash.d/all/030_apptainer/001_build.sh.source
+
+################################################################################
+# Internal build function
+################################################################################
+_apptainer_build() {
+    local def_file="$1"
+    local output="$2"
+    local log="$3"
+    shift 3
+    local options="$@"
+
+    ee "apptainer build $options $output $def_file 2>&1 | tee $log"
+}
+
+################################################################################
+# Core build functions from existing containers
+################################################################################
+
+apptainer_build_sandbox_from_sif() {
+    # Example:
+    #   apptainer_build_sandbox_from_sif  # Builds sandbox from ./apptainer/image.sif
+    local LOG_PATH="${APPTAINER_SANDBOX_SIF_CD_PATH%.*}_from_sif.log"
+
+    if [ -f $APPTAINER_STATIC_SIF_CD_PATH ]; then
+        ee "apptainer build --sandbox $APPTAINER_SANDBOX_SIF_CD_PATH $APPTAINER_STATIC_SIF_CD_PATH 2>&1 | tee ${LOG_PATH}"
+    else
+        echo "Error: $APPTAINER_STATIC_SIF_CD_PATH not found"
+        return 1
+    fi
+}
+
+apptainer_build_sif_from_sandbox() {
+    # Example:
+    #   apptainer_build_sif_from_sandbox  # Builds SIF from ./apptainer/image.sandbox
+    local LOG_PATH="${APPTAINER_STATIC_SIF_CD_PATH%.*}_from_sandbox.log"
+
+    if [ -d $APPTAINER_SANDBOX_SIF_CD_PATH ]; then
+        ee "apptainer build $APPTAINER_STATIC_SIF_CD_PATH $APPTAINER_SANDBOX_SIF_CD_PATH 2>&1 | tee ${LOG_PATH}"
+    else
+        echo "Error: $APPTAINER_SANDBOX_SIF_CD_PATH not found"
+        return 1
+    fi
+}
+
+################################################################################
+# Build functions from definition files
+################################################################################
+
+apptainer_build_sif_from_def() {
+    # Example:
+    # $ apptainer_build_sif_from_def recipe.def --fakeroot --remote
+    DEFINITION_FILE=$1
+    shift
+    OPTIONS="$@"
+
+    BASE_NAME="${DEFINITION_FILE%.*}"
+    STATIC_IMAGE_PATH=${BASE_NAME}.sif
+    LOG_PATH=${BASE_NAME}.log
+
+    _apptainer_build "$DEFINITION_FILE" "$STATIC_IMAGE_PATH" "$LOG_PATH" "$OPTIONS"
+}
+
+apptainer_build_sandbox_from_def() {
+    # Example:
+    # $ apptainer_build_sandbox_from_def recipe.def --fakeroot --remote
+    DEFINITION_FILE=$1
+    shift
+    OPTIONS="$@"
+
+    BASE_NAME="${DEFINITION_FILE%.*}"
+    SANDBOX_IMAGE_PATH=${BASE_NAME}.sandbox
+    LOG_PATH=${BASE_NAME}_sandbox.log
+
+    _apptainer_build "$DEFINITION_FILE" "$SANDBOX_IMAGE_PATH" "$LOG_PATH" --fix-perms --sandbox "$OPTIONS"
+    if [ -d "$SANDBOX_IMAGE_PATH" ]; then
+        _organize_sandbox "$DEFINITION_FILE" "$SANDBOX_IMAGE_PATH" "$LOG_PATH"
+    fi
+}
+
+# # EOF

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 00:41:22 (ywatanabe)"
+# File: ./.dotfiles/.bash.d/all/030_apptainer/src/001_static_home.sh.source
+
+apptainer_shell_home() { ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_SIF_HOME_PATH"; }
+_apptainer_py_home () {
+    BIN=$1
+    shift
+    ee "singularity exec --fakeroot --cleanenv --nv $APPTAINER_STATIC_SIF_HOME_PATH $BIN $@"
+}
+apptainer_py_home () { _apptainer_py_home python; }
+apptainer_ipython_home () { _apptainer_py_home ipython; }
+apptainer_jupyter_notebook_home () { _apptainer_py_home jupyter-notebook; }
+
+# Aliases
+alias ashellhome='apptainer_shell_home'
+alias apyhome='apptainer_py_home'
+alias aipyhome='apptainer_ipython_home'
+alias ajpyhome='apptainer_jupyter_notebook_home'
+
+# EOF
