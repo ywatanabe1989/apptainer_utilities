@@ -1,38 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 00:58:29 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_build.sh.source
-
-show_help() {
-    cat << EOF
-Apptainer Build Functions
-
-Internal:
-_apptainer_build DEF_FILE OUTPUT LOG [OPTIONS]
-    Executes apptainer build with logging
-
-Core Functions:
-apptainer_build_sandbox_from_sif
-    Converts SIF to sandbox format
-    Example: apptainer_build_sandbox_from_sif
-    Uses: ./apptainer/image.sif -> ./apptainer/image.sandbox
-
-apptainer_build_sif_from_sandbox
-    Converts sandbox to SIF format
-    Example: apptainer_build_sif_from_sandbox
-    Uses: ./apptainer/image.sandbox -> ./apptainer/image.sif
-
-Definition File Functions:
-apptainer_build_sif_from_def DEF_FILE [OPTIONS]
-    Builds SIF from definition file
-    Example: apptainer_build_sif_from_def recipe.def --fakeroot --remote
-    Output: recipe.sif, recipe.log
-
-apptainer_build_sandbox_from_def DEF_FILE [OPTIONS]
-    Builds sandbox from definition file
-    Example: apptainer_build_sandbox_from_def recipe.def --fakeroot --remote
-    Output: recipe.sandbox, recipe_sandbox.log
-EOF
-}
+# Time-stamp: "2024-12-08 08:05:01 (ywatanabe)"
+# File: ./apptainer_utilities/src/005_build.sh.source
 
 ################################################################################
 # Internal build function
@@ -51,10 +19,11 @@ _apptainer_build() {
 # Core build functions from existing containers
 ################################################################################
 
-apptainer_build_sandbox_from_sif() {
+apptainer_build_sif2sand() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-        echo "Usage: apptainer_build_sandbox_from_sif"
-        echo "Converts SIF to sandbox format using ./apptainer/image.sif"
+        echo "Converts SIF to sandbox format"
+        echo "Example: apptainer_build_sif2sand"
+        echo "Usage: ./apptainer/image.sif -> ./apptainer/image.sandbox"
         return 0
     fi
 
@@ -68,10 +37,11 @@ apptainer_build_sandbox_from_sif() {
     fi
 }
 
-apptainer_build_sif_from_sandbox() {
+apptainer_build_sand2sif() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-        echo "Usage: apptainer_build_sandbox_from_sif"
-        echo "Converts sandbox to SIF format using ./apptainer/image.sandbox"
+        echo "Converts sandbox to SIF format"
+        echo "Example: apptainer_build_sand2sif"
+        echo "Ussage: ./apptainer/image.sandbox -> ./apptainer/image.sif"
         return 0
     fi
 
@@ -89,11 +59,11 @@ apptainer_build_sif_from_sandbox() {
 # Build functions from definition files
 ################################################################################
 
-apptainer_build_sif_from_def() {
+apptainer_build_def2sif() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-        echo "Usage: apptainer_build_sif_from_def DEFINITION_FILE [OPTIONS]"
         echo "Builds SIF from definition file"
-        echo "Example: apptainer_build_sif_from_def recipe.def --fakeroot --remote"
+        echo "Example: apptainer_build_def2sif recipe.def --fakeroot --remote"
+        echo "Output: recipe.sif, recipe.log"
         return 0
     fi
 
@@ -108,11 +78,11 @@ apptainer_build_sif_from_def() {
     _apptainer_build "$DEFINITION_FILE" "$STATIC_IMAGE_PATH" "$LOG_PATH" "$OPTIONS"
 }
 
-apptainer_build_sandbox_from_def() {
+apptainer_build_def2sand() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-        echo "Usage: apptainer_build_sandbox_from_def DEFINITION_FILE [OPTIONS]"
         echo "Builds sandbox from definition file"
-        echo "Example: apptainer_build_sandbox_from_def recipe.def --fakeroot --remote"
+        echo "Example: apptainer_build_def2sand recipe.def --fakeroot --remote"
+        echo "Output: recipe.sandbox, recipe_sandbox.log"
         return 0
     fi
 
@@ -130,4 +100,10 @@ apptainer_build_sandbox_from_def() {
     fi
 }
 
-# # EOF
+# Aliases
+alias apptainer_build_sif2sand=abuild_sif2sand
+alias apptainer_build_sand2sif=abuild_sand2sif
+alias apptainer_build_def2sif=abuild_def2sif
+alias apptainer_build_def2sand=abuild_def2sand
+
+# EOF

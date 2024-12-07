@@ -1,0 +1,25 @@
+#!/bin/bash
+# Time-stamp: "2024-12-08 08:19:08 (ywatanabe)"
+# File: ./apptainer_utilities/src/000_envs_user.sh.source
+
+# Apptainer binary directory
+# export APPTAINER_BIN_DIR="$HOME/.apptainer/.bin"
+# mkdir -p $APPTAINER_BIN_DIR
+
+# Directory structure
+export APPTAINER_GLOBAL_DIR="$HOME/.apptainer/"
+export APPTAINER_LOCAL_DIR="./.apptainer/"
+export APPTAINER_STATIC_IMAGE="image.sif"
+export APPTAINER_SANDBOX_IMAGE="image.sandbox"
+
+# Derived paths
+export APPTAINER_STATIC_IMAGE_GLOBAL_PATH=$APPTAINER_GLOBAL_DIR/$APPTAINER_STATIC_IMAGE
+export APPTAINER_STATIC_IMAGE_LOCAL_PATH=$APPTAINER_LOCAL_DIR/$APPTAINER_STATIC_IMAGE
+export APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH=$APPTAINER_GLOBAL_DIR/$APPTAINER_SANDBOX_IMAGE
+export APPTAINER_SANDBOX_IMAGE_LOCAL_PATH=$APPTAINER_LOCAL_DIR/$APPTAINER_SANDBOX_IMAGE
+
+# Common options
+export APPTAINER_RUNTIME_OPTIONS="$APPTAINER_RUNTIME_OPTIONS"
+
+
+# EOF
