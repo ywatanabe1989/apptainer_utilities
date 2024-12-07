@@ -1,7 +1,7 @@
 <!-- ---
 !-- title: ./apptainer_utilities/README.md
 !-- author: ywatanabe
-!-- date: 2024-12-08 01:15:17
+!-- date: 2024-12-08 01:21:36
 !-- --- -->
 
 
@@ -115,14 +115,6 @@ project_B/.apptainer/
 | `APPTAINER_GLOBAL_DIR` | Global container dir | `$HOME/.apptainer/` |
 | `APPTAINER_LOCAL_DIR` | Local container dir | `./.apptainer/` |
 | `APPTAINER_RUNTIME_OPTIONS` | Default runtime options | `"--fakeroot --cleanenv --nv"` |
-
-## Dependencies
-
-- Apptainer/Singularity
-- rsync
-- diffutils
-- bash 4+
-- Python (for Python operations)
 
 ## License
 
