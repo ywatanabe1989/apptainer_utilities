@@ -1,16 +1,48 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 01:02:34 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_static_global.sh.source
+# Time-stamp: "2024-12-08 02:16:37 (ywatanabe)"
+# File: ./apptainer_utilities/src/007_static_global.sh.source
 
-apptainer_shell_home() { ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_HOME_PATH"; }
+apptainer_shell_home() {
+    if [[ "$1" == "-h" ]]; then
+        echo "Usage: ashellhome [-h]"
+        echo "Shell into global static container"
+        return 0
+    fi
+    ee "singularity shell $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_HOME_PATH"
+}
+
 _apptainer_py_home () {
     BIN=$1
     shift
     ee "singularity exec $APPTAINER_RUNTIME_OPTIONS $APPTAINER_STATIC_IMAGE_HOME_PATH $BIN $@"
 }
-apptainer_py_home () { _apptainer_py_home python; }
-apptainer_ipython_home () { _apptainer_py_home ipython; }
-apptainer_jupyter_notebook_home () { _apptainer_py_home jupyter-notebook; }
+
+apptainer_py_home () {
+    if [[ "$1" == "-h" ]]; then
+        echo "Usage: apyhome [-h] [script.py] [args...]"
+        echo "Run Python in global static container"
+        return 0
+    fi
+    _apptainer_py_home python "$@"
+}
+
+apptainer_ipython_home () {
+    if [[ "$1" == "-h" ]]; then
+        echo "Usage: aipyhome [-h]"
+        echo "Start IPython in global static container"
+        return 0
+    fi
+    _apptainer_py_home ipython
+}
+
+apptainer_jupyter_notebook_home () {
+    if [[ "$1" == "-h" ]]; then
+        echo "Usage: ajpyhome [-h] [notebook.ipynb]"
+        echo "Launch Jupyter notebook in global static container"
+        return 0
+    fi
+    _apptainer_py_home jupyter-notebook
+}
 
 # Aliases
 alias ashellhome='apptainer_shell_home'

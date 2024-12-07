@@ -1,20 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 01:03:46 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_static_local.sh.source
-
-show_help() {
-    cat << EOF
-Static SIF Container Operations
-
-Commands:
-ashell  - Shell into static container
-apy     - Run Python in container
-aipy    - Run IPython in container
-ajpy    - Run Jupyter in container
-
-Using container at: $APPTAINER_STATIC_IMAGE_LOCAL_PATH
-EOF
-}
+# Time-stamp: "2024-12-08 02:14:56 (ywatanabe)"
+# File: ./apptainer_utilities/src/006_static_local.sh.source
 
 # Static SIF container operations
 ashell() {

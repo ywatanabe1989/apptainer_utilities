@@ -1,5 +1,5 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 01:20:20 (ywatanabe)"
+# Time-stamp: "2024-12-08 08:12:03 (ywatanabe)"
 # File: ./apptainer_utilities/entry.sh.source
 
 ################################################################################
@@ -18,17 +18,18 @@
 ## - Basic Unix tools (sed, grep, etc.)
 ################################################################################
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Source all component files
-SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
-source "${SCRIPT_DIR}/src/001_utils.sh.source"
-source "${SCRIPT_DIR}/src/002_dev.sh.source"
-source "${SCRIPT_DIR}/src/003_envs_user.sh.source"
-source "${SCRIPT_DIR}/src/004_envs_apptainer.sh.source"
-source "${SCRIPT_DIR}/src/005_build.sh.source"
-source "${SCRIPT_DIR}/src/006_static_local.sh.source"
-source "${SCRIPT_DIR}/src/007_static_global.sh.source"
-source "${SCRIPT_DIR}/src/008_sandbox_local.sh.source"
-source "${SCRIPT_DIR}/src/009_sandbox_global.sh.source"
-source "${SCRIPT_DIR}/src/010_global.sh.source"
+source "$SCRIPT_DIR/src/000_envs_user.sh.source"
+source "$SCRIPT_DIR/src/000_envs_apptainer.sh.source"
+source "$SCRIPT_DIR/src/001_utils.sh.source"
+source "$SCRIPT_DIR/src/002_dev.sh.source"
+source "$SCRIPT_DIR/src/005_build.sh.source"
+source "$SCRIPT_DIR/src/006_static_local.sh.source"
+source "$SCRIPT_DIR/src/007_static_global.sh.source"
+source "$SCRIPT_DIR/src/008_sandbox_local.sh.source"
+source "$SCRIPT_DIR/src/009_sandbox_global.sh.source"
+source "$SCRIPT_DIR/src/010_global.sh.source"
 
 # EOF

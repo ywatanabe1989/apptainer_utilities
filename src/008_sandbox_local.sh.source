@@ -1,31 +1,16 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 01:05:12 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_sandbox_local.sh.source
-
-show_help() {
-    cat << EOF
-Sandbox Container Operations
-
-Commands:
-ashell_sand    - Shell into sandbox container
-ashell_sand_w  - Shell into writable sandbox container
-apy_sand      - Run Python in sandbox
-aipy_sand     - Run IPython in sandbox
-ajpy_sand     - Run Jupyter in sandbox
-
-Using container at: $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH
-EOF
-}
+# Time-stamp: "2024-12-08 02:19:47 (ywatanabe)"
+# File: ./apptainer_utilities/src/008_sandbox_local.sh.source
 
 # Sandbox container operations
 ashell_sand() {
     [[ "$1" == "-h" ]] && echo "Usage: ashell_sand - Shell into sandbox container" && return
-    ee "apptainer shell -f -c --nv $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
+    ee "apptainer shell --fakeroot --clean_env --nv $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
 }
 
 ashell_sand_w() {
     [[ "$1" == "-h" ]] && echo "Usage: ashell_sand_w - Shell into writable sandbox container" && return
-    ee "unset APPTAINER_BIND; apptainer shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
+    ee "unset APPTAINER_BIND; apptainer shell --fakeroot --clean_env --writable $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH"
 }
 
 _apy_sand() {

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 01:05:12 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_global.sh.source
+# Time-stamp: "2024-12-08 08:18:09 (ywatanabe)"
+# File: ./apptainer_utilities/src/010_global.sh.source
 
 show_help() {
     cat << EOF
@@ -50,15 +50,10 @@ apptainer_jupyter_notebook_global () {
     _apptainer_py_global jupyter-notebook
 }
 
-apptainer_shell_sand_global() {
-    [[ "$1" == "-h" ]] && echo "Usage: ashellsandglobal - Shell into global sandbox container" && return
-    ee "unset APPTAINER_BIND; singularity shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH"
-}
-
 #### Working with sandbox containers, located as $GLOBAL/.singularity/sandbox in default
 apptainer_shell_sand_global() {
     [[ "$1" == "-h" ]] && echo "Usage: ashellsandglobal - Shell into global sandbox container" && return
-    ee "unset APPTAINER_BIND; singularity shell -f -c --writable $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH"
+    ee "unset APPTAINER_BIND; singularity shell --fakeroot --clean_env --writable $APPTAINER_SANDBOX_IMAGE_GLOBAL_PATH"
 }
 
 _apptainer_py_sand_global () {
