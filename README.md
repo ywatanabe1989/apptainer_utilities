@@ -1,7 +1,7 @@
 <!-- ---
 !-- title: ./apptainer_utilities/README.md
 !-- author: ywatanabe
-!-- date: 2024-12-08 01:04:51
+!-- date: 2024-12-08 01:15:17
 !-- --- -->
 
 
@@ -9,11 +9,31 @@
 
 Collection of shell utilities for managing Apptainer/Singularity containers.
 
+## Features
+
+Key Features:
+1. Command abstraction and simplification
+2. Consistent naming convention (`a*` prefix)
+3. Comprehensive safety checks and documentation
+4. Automatic logging and version control:
+   - Session history
+   - Container changes
+   - Version snapshots
+
+Benefits:
+1. Simplified container management
+2. Enhanced reproducibility
+3. Consistent environments
+4. Complete audit trail
+
+Essentially: Makes Apptainer easier to use while maintaining detailed operation records.
+
+
 ## Installation
 
 #### Apptainer itself
-1. `$ source src/000_install_apptainer.sh && install_apptainer`
-2. `$ source src/000_enable_fakeroot.sh && apptainer_enable_fakeroot`
+1. `$ source src/install_apptainer.sh.source && install_apptainer`
+2. `$ source src/enable_fakeroot.sh.source && apptainer_enable_fakeroot`
 
 #### Apptainer Utilities
 
