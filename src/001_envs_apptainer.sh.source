@@ -1,0 +1,38 @@
+
+#!/bin/bash
+# Time-stamp: "2024-12-08 00:08:51 (ywatanabe)"
+# File: ./.dotfiles/.bash.d/all/030_apptainer/001_envs_apptainer.sh.source
+
+################################################################################
+# Apptainer Environment Configuration
+#
+# Sets up environment variables for Apptainer containers:
+# 1. Path configurations
+# 2. Python environment
+# 3. Base container settings
+# 4. Display and CUDA settings
+################################################################################
+
+# Path settings
+export APPTAINERENV_PATH=$(
+    if command -v apptainer >/dev/null 2>&1; then
+        echo "$PATH" | sed "s|$(dirname $(command -v apptainer))||g; s|::*|:|g; s|^:||| s|:$||"
+    else
+        echo "$PATH"
+    fi
+)
+
+# Python environment
+export APPTAINERENV_PYTHONPATH="$PYTHONPATH"
+export APPTAINERENV_PYTHONSTARTUP="$PYTHONSTARTUP"
+
+# CUDA configuration
+export APPTAINERENV_CUDA_VISIBLE_DEVICES="$CUDA_VISIBLE_DEVICES"
+
+# Base container settings
+export APPTAINERENV_USER="$USER"
+export APPTAINERENV_MYHOME="$MYHOME"
+export APPTAINERENV_DISPLAY="$DISPLAY"
+export APPTAINERENV_OUTDATED_IGNORE="$OUTDATED_IGNORE"
+
+# EOF

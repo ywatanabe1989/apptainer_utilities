@@ -1,0 +1,23 @@
+# 000_utils.sh.source
+#!/bin/bash
+# Time-stamp: "2024-12-07 18:56:55 (ywatanabe)"
+
+# Utility functions
+acpy() {
+    if [ -f $APPTAINER_STATIC_SIF_HOME_PATH ]; then
+        cp $APPTAINER_STATIC_SIF_HOME_PATH $APPTAINER_STATIC_SIF_CD_PATH
+    else
+        echo "Error: $APPTAINER_STATIC_SIF_HOME_PATH not found"
+        return 1
+    fi
+}
+
+echo_eval() {
+    # Example: 
+    #   ee "ls -l"  # Shows and executes "ls -l"
+    #   ee "python script.py"  # Shows and executes python script
+    echo ">>> $@"
+    eval "$@"
+}
+
+alias ee=echo_eval
