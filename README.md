@@ -9,26 +9,6 @@
 
 Collection of utilities for managing Apptainer/Singularity containers.
 
-## Features
-
-Key Features:
-1. Command abstraction and simplification
-2. Consistent naming convention (`a*` prefix)
-3. Comprehensive safety checks and documentation
-4. Automatic logging and version control:
-   - Session history
-   - Container changes
-   - Version snapshots
-
-Benefits:
-1. Simplified container management
-2. Enhanced reproducibility
-3. Consistent environments
-4. Complete audit trail
-
-Essentially: Makes Apptainer easier to use while maintaining detailed operation records.
-
-
 ## Installation
 
 #### Apptainer itself
