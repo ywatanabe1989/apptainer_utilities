@@ -1,5 +1,5 @@
 #!/bin/bash
-# Time-stamp: "2024-12-09 08:48:43 (ywatanabe)"
+# Time-stamp: "2024-12-09 09:30:10 (ywatanabe)"
 # File: ./apptainer-utils/src/001_mkdirs.sh.src
 
 _mkdir_touch() {
@@ -167,7 +167,7 @@ apptainer_init_or_update_dir() {
 
     echo "Container directory structure updated successfully"
     echo ""
-    tree $BASE_PATH/.apptainer
+    tree $APPTAINER_DIR -L 2
     echo ""
     echo "You might want to:"
     echo "    - Implement $BASE_PATH/.apptainer/$CONTAINER_NAME/definitions/$CONTAINER_NAME.def"
