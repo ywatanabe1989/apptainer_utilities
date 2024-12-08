@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 02:14:56 (ywatanabe)"
-# File: ./apptainer_utilities/src/006_static_local.sh.source
+# Time-stamp: "2024-12-09 08:51:53 (ywatanabe)"
+# File: ./apptainer-utils/src/006_static_local.sh.src
 
 # Static SIF container operations
 ashell() {

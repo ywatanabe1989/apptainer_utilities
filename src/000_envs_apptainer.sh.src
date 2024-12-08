@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 09:54:45 (ywatanabe)"
-# File: ./apptainer_utilities/src/000_envs_apptainer.sh.source
+# Time-stamp: "2024-12-09 03:51:23 (ywatanabe)"
+# File: ./apptainer_utilities/src/000_envs_apptainer.sh.src
 
 ################################################################################
 # Apptainer Environment Configuration

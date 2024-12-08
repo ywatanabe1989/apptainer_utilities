@@ -1,6 +1,6 @@
 #!/bin/bash
 # Time-stamp: "2024-12-08 02:20:13 (ywatanabe)"
-# File: ./apptainer_utilities/src/009_sandbox_global.sh.source
+# File: ./apptainer_utilities/src/009_sandbox_global.sh.src
 
 #### Working with sandbox containers, located as $HOME/.singularity/sandbox in default
 

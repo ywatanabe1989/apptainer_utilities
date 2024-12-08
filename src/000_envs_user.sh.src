@@ -1,14 +1,14 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 08:19:08 (ywatanabe)"
-# File: ./apptainer_utilities/src/000_envs_user.sh.source
+# Time-stamp: "2024-12-09 03:51:22 (ywatanabe)"
+# File: ./apptainer_utilities/src/000_envs_user.sh.src
 
 # Apptainer binary directory
 # export APPTAINER_BIN_DIR="$HOME/.apptainer/.bin"
 # mkdir -p $APPTAINER_BIN_DIR
 
 # Directory structure
-export APPTAINER_GLOBAL_DIR="$HOME/.apptainer/"
-export APPTAINER_LOCAL_DIR="./.apptainer/"
+export APPTAINER_GLOBAL_DIR="$HOME/.apptainer"
+export APPTAINER_LOCAL_DIR="./.apptainer"
 export APPTAINER_STATIC_IMAGE="image.sif"
 export APPTAINER_SANDBOX_IMAGE="image.sandbox"
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+# Time-stamp: "2024-12-09 05:22:23 (ywatanabe)"
+# File: ./apptainer_utilities/src/001_utils.sh.src
+
+# Utility functions
+echo_eval() {
+    [[ "$1" == "-h" ]] && echo "Usage: ee/echo_eval COMMAND - Echo and execute command" && return
+    echo ">>> $@"
+    eval "$@"
+}
+
+alias ee=echo_eval

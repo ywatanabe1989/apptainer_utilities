@@ -1,0 +1,67 @@
+#!/bin/bash
+# Time-stamp: "2024-12-09 04:42:29 (ywatanabe)"
+# File: ./apptainer_utilities/src/005_build.sh.src
+
+# | **Building** |
+# | | `abuild_def2sif` | Build SIF from def file | `abuild_sif_from_def /path/to/recipe.def` | `/path/to/recipe.sif`, `/path/to/recipe.sif.log` |
+# | | `abuild_def2sand` | Build sandbox from def | `abuild_def2sand /path/to/recipe.def` | `/path/to/recipe.sandbox`, `/path/to/recipe.sandbox.log` |
+
+apptainer_build_def2sif() {
+    if [[ "$1" == "-h" || "$1" == "--help" || -z "$1" ]]; then
+        echo "Builds SIF from definition file"
+        echo "Example: apptainer_build_def2sif /path/to/image.def"
+        echo "Example: abuild_def2sif /path/to/image.def"
+        echo "Usage: /path/to/image.def -> /path/to/image.sif"
+        return 0
+    fi
+
+    local SRC_DEF_PATH="$1"
+    local TGT_SIF_PATH="${SRC_DEF_PATH%.def}.sif"
+    local LOG_PATH="${TGT_SIF_PATH}.log"
+    local OPTIONS=""
+
+    if [ ! -f "$SRC_DEF_PATH" ]; then
+        echo "Error: Definition file $SRC_DEF_PATH not found"
+        return 1
+    fi
+
+    if [ ! "${SRC_DEF_PATH##*.}" = "def" ]; then
+        echo "Error: Input file must be a .def file"
+        return 1
+    fi
+
+    ee "apptainer build $OPTIONS $TGT_SIF_PATH $SRC_DEF_PATH 2>&1 | tee $LOG_PATH"
+}
+
+apptainer_build_def2sand() {
+    if [[ "$1" == "-h" || "$1" == "--help" || -z "$1" ]]; then
+        echo "Builds sandbox from definition file"
+        echo "Example: apptainer_build_def2sand /path/to/image.def"
+        echo "Example: abuild_def2sand /path/to/image.def"
+        echo "Usage: /path/to/image.def -> /path/to/image.sandbox"
+        return 0
+    fi
+
+    local SRC_DEF_PATH="$1"
+    local TGT_SAND_PATH="${SRC_DEF_PATH%.def}.sandbox"
+    local LOG_PATH="${TGT_SAND_PATH}.log"
+    local OPTIONS="--sandbox"
+
+    if [ ! -f "$SRC_DEF_PATH" ]; then
+        echo "Error: Definition file $SRC_DEF_PATH not found"
+        return 1
+    fi
+
+    if [ ! "${SRC_DEF_PATH##*.}" = "def" ]; then
+        echo "Error: Input file must be a .def file"
+        return 1
+    fi
+
+    ee "apptainer build $OPTIONS $TGT_SAND_PATH $SRC_DEF_PATH 2>&1 | tee $LOG_PATH"
+}
+
+# Aliases
+alias apptainer_build_def2sif=abuild_def2sif
+alias apptainer_build_def2sand=abuild_def2sand
+
+# EOF

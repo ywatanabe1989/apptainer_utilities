@@ -1,6 +1,6 @@
 #!/bin/bash
 # Time-stamp: "2024-12-08 02:16:37 (ywatanabe)"
-# File: ./apptainer_utilities/src/007_static_global.sh.source
+# File: ./apptainer_utilities/src/007_static_global.sh.src
 
 apptainer_shell_home() {
     if [[ "$1" == "-h" ]]; then

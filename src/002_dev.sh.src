@@ -1,6 +1,6 @@
 #!/bin/bash
 # Time-stamp: "2024-12-08 00:45:35 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_dev.sh.source
+# File: ./apptainer_utilities/src/001_dev.sh.src
 
 ################################################################################
 # Apptainer Development Environment
