@@ -1,6 +1,6 @@
 #!/bin/bash
 # Time-stamp: "2024-12-08 01:15:34 (ywatanabe)"
-# File: ./apptainer_utilities/src/enable_fakeroot.sh.source
+# File: ./apptainer_utilities/src/enable_fakeroot.sh.src
 
 apptainer_enable_fakeroot() {
     LOG_FILE="$0.log"

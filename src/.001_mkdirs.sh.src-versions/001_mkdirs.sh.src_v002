@@ -1,0 +1,197 @@
+#!/bin/bash
+# Time-stamp: "2024-12-09 06:45:38 (ywatanabe)"
+# File: ./apptainer-utils/src/001_mkdirs.sh.src
+
+_apptainer_mkdir() {
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        cat << 'EOF'
+Usage: apptainer_mkdir [-c CONTAINER_NAME] [-p PATH] [-h|--help]
+Usage: amkdir [-c CONTAINER_NAME] [-p PATH] [-h|--help]
+
+Creates initial Apptainer directory structure
+
+Options:
+    -c CONTAINER_NAME  Name for container (default: "container-template")
+    -p PATH           Target directory (default: current directory)
+    -h, --help        Show this help message
+
+Directory Structure: (XXX is CONTAINER_NAME)
+$PATH/
+└── .apptainer/
+    ├── image.sif -> ./XXX/XXX.sif
+    ├── image.sandbox -> ./XXX/XXX.sandbox
+    └── XXX
+        ├── XXX.def -> ./definitions/XXX_latest.def
+        ├── XXX.sif
+        ├── XXX.sif.log
+        ├── XXX.sandbox
+        ├── XXX.sandbox.log
+        └── definitions
+            ├── XXX_v001.def
+            ├── XXX_v002.def
+            └── XXX_latest.def
+EOF
+        return 0
+    fi
+
+    local CONTAINER_NAME="container-template"
+    local base_path="."
+
+    while getopts "c:p:h" opt; do
+        case ${opt} in
+            c )
+                CONTAINER_NAME=$OPTARG
+                ;;
+            p )
+                base_path=$OPTARG
+                ;;
+            h )
+                $0 --help
+                return 0
+                ;;
+            \? )
+                echo "Invalid option: -$OPTARG" 1>&2
+                return 1
+                ;;
+        esac
+    done
+
+    mkdir -p $base_path 2>&1 >/dev/null
+    # Create placeholder files only if they don't exist
+    [[ ! -f "$container_dir/$CONTAINER_NAME.sif" ]] && touch "$container_dir/$CONTAINER_NAME.sif"
+    [[ ! -f "$container_dir/$CONTAINER_NAME.sandbox" ]] && touch "$container_dir/$CONTAINER_NAME.sandbox"
+    [[ ! -f "$container_dir/$CONTAINER_NAME.sif.log" ]] && touch "$container_dir/$CONTAINER_NAME.sif.log"
+    [[ ! -f "$container_dir/$CONTAINER_NAME.sandbox.log" ]] && touch "$container_dir/$CONTAINER_NAME.sandbox.log"
+
+    # Create initial versioned definition file only if no version exists
+    if ! ls "$container_dir/definitions/"*_v[0-9]*.def >/dev/null 2>&1; then
+        touch "$container_dir/definitions/${CONTAINER_NAME}_v001.def"
+    fi
+
+    # Create initial symlinks (empty)
+    touch "$apptainer_dir/image.sif" \
+          "$apptainer_dir/image.sandbox"
+
+    return 0
+}
+
+_apptainer_def_versions() {
+    local container_dir="$1"
+
+    mkdir -p "$container_dir/definitions" 2>&1 >/dev/null
+
+    local latest=$(ls -v "$container_dir/definitions"/*_v[0-9]*.def 2>/dev/null | tail -n1)
+    if [[ -n "$latest" ]]; then
+        local rel_path=$(basename "$latest")
+        ln -sfr "$rel_path" "$container_dir/definitions/$(basename "$container_dir")_latest.def"
+    fi
+}
+
+_apptainer_def_differences() {
+    local container_dir="$1"
+    local defs_dir="$container_dir/definitions"
+    local diff_dir="$defs_dir/differences"
+
+    mkdir -p "$diff_dir" 2>&1 >/dev/null
+
+    # Get all version files sorted
+    local versions=($(ls -v "$defs_dir"/*_v[0-9]*.def 2>/dev/null))
+
+    # Create diffs between consecutive versions
+    for ((i=0; i<${#versions[@]}-1; i++)); do
+        local curr=${versions[i]}
+        local next=${versions[i+1]}
+        local curr_base=$(basename "$curr" .def)
+        local next_base=$(basename "$next" .def)
+        local diff_file="$diff_dir/${curr_base}_${next_base}.diff"
+
+        if [[ ! -f "$diff_file" ]]; then
+            diff -u "$curr" "$next" > "$diff_file" 2>/dev/null
+        fi
+    done
+}
+
+_apptainer_update_symlinks() {
+    local apptainer_dir="$1"
+    local container_name="${2:-container-template}"
+    local container_dir="$apptainer_dir/$container_name"
+
+    mkdir -p "$apptainer_dir/$container_name" 2>&1 >/dev/null
+
+    rm -f "$apptainer_dir/image.sif" \
+          "$apptainer_dir/image.sandbox" \
+          "$apptainer_dir/$container_name/$container_name.def"
+
+    # Relative paths need to be corrected
+    ln -sfr "$container_dir/$container_name.sif" "$apptainer_dir/image.sif"
+    ln -sfr "$container_dir/$container_name.sandbox" "$apptainer_dir/image.sandbox"
+    ln -sfr "$container_dir/definitions/${container_name}_latest.def" "$container_dir/$container_name.def"
+
+}
+
+apptainer_init_or_update_dir() {
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        cat << 'EOF'
+Usage: apptainer_init_or_update_dir [-c CONTAINER_NAME] [-p PATH] [-h|--help]
+Usage: adir [-c CONTAINER_NAME] [-p PATH] [-h|--help]
+
+Initializes or updates Apptainer container directory structure.
+This command combines mkdir, version management, and symlink updates.
+
+Options:
+    -c CONTAINER_NAME  Name for container (default: "container-template")
+    -p PATH           Target directory (default: current directory)
+    -h, --help        Show this help message
+
+Workflow:
+1. Creates directory structure if not exists
+2. Updates definition file versions
+3. Updates symbolic links
+
+Example:
+    apptainer_init_or_update_dir -c mycontainer -p .
+    apptainer_init_or_update_dir -p /path/to/project -c container1
+EOF
+        return 0
+    fi
+
+    local container_name="container-template"
+    local base_path="."
+
+    while getopts "c:p:h" opt; do
+        case ${opt} in
+            c )
+                container_name=$OPTARG
+                ;;
+            p )
+                base_path=$OPTARG
+                ;;
+            h )
+                $0 --help
+                return 0
+                ;;
+            \? )
+                echo "Invalid option: -$OPTARG" 1>&2
+                return 1
+                ;;
+        esac
+    done
+
+    _apptainer_mkdir "$base_path" "$container_name" || return 1
+    _apptainer_def_versions "$base_path/.apptainer/$container_name" || return 1
+    _apptainer_def_differences "$base_path/.apptainer/$container_name" || return 1
+    _apptainer_update_symlinks "$base_path/.apptainer" "$container_name" || return 1
+
+    echo "Container directory structure updated successfully"
+
+    echo ""
+    tree $base_path/.apptainer
+    echo ""
+    echo "You might want to:"
+    echo "    - Implement $base_path/.apptainer/$container_name/definitions/$container_name.def"
+    echo "    - Make  $base_path/.apptainer/$container_name/definitions/$container_name.def"
+    echo "    - Update symlinks $base_path/.apptainer/image.{sif,sandbox}"
+}
+
+alias amkdir='_apptainer_mkdir'
+alias adir='apptainer_init_or_update_dir'

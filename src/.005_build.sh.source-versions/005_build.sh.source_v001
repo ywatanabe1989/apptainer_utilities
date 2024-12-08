@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 08:05:01 (ywatanabe)"
-# File: ./apptainer_utilities/src/005_build.sh.source
+# Time-stamp: "2024-12-09 03:19:09 (ywatanabe)"
+# File: ./apptainer_utilities/src/005_build.sh.src
 
 ################################################################################
 # Internal build function
@@ -30,7 +30,11 @@ apptainer_build_sif2sand() {
     local LOG_PATH="${APPTAINER_SANDBOX_IMAGE_LOCAL_PATH%.*}_from_sif.log"
 
     if [ -f $APPTAINER_STATIC_IMAGE_LOCAL_PATH ]; then
-        ee "apptainer build --sandbox $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH $APPTAINER_STATIC_IMAGE_LOCAL_PATH 2>&1 | tee ${LOG_PATH}"
+        ee "apptainer build \
+        --sandbox \
+        $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH \
+        $APPTAINER_STATIC_IMAGE_LOCAL_PATH \
+        2>&1 | tee ${LOG_PATH}"
     else
         echo "Error: $APPTAINER_STATIC_IMAGE_LOCAL_PATH not found"
         return 1
@@ -48,7 +52,10 @@ apptainer_build_sand2sif() {
     local LOG_PATH="${APPTAINER_STATIC_IMAGE_LOCAL_PATH%.*}_from_sandbox.log"
 
     if [ -d $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH ]; then
-        ee "apptainer build $APPTAINER_STATIC_IMAGE_LOCAL_PATH $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH 2>&1 | tee ${LOG_PATH}"
+        ee "apptainer build \
+        $APPTAINER_STATIC_IMAGE_LOCAL_PATH \
+        $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH \
+        2>&1 | tee ${LOG_PATH}"
     else
         echo "Error: $APPTAINER_SANDBOX_IMAGE_LOCAL_PATH not found"
         return 1

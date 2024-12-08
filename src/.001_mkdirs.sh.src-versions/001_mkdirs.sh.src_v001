@@ -1,15 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 02:24:42 (ywatanabe)"
-# File: ./apptainer_utilities/src/001_utils.sh.source
-
-# Utility functions
-echo_eval() {
-    [[ "$1" == "-h" ]] && echo "Usage: ee/echo_eval COMMAND - Echo and execute command" && return
-    echo ">>> $@"
-    eval "$@"
-}
-
-alias ee=echo_eval
+# Time-stamp: "2024-12-09 05:31:03 (ywatanabe)"
+# File: ./apptainer-utils/src/001_mkdirs.sh.src
 
 
 apptainer_make_directories() {
@@ -20,15 +11,15 @@ apptainer_make_directories() {
         echo "Directory Structure:"
         echo "\$PATH/.apptainer/"
         echo "├── image.sif              # Static container"
-        echo "├── image.sandbox/         # Development container" 
+        echo "├── image.sandbox/         # Development container"
         echo "├── definitions/           # Container recipes"
         echo "└── builds/"
         echo "    └── current/"
         echo "        ├── snapshots/     # Version history"
         echo "        ├── sessions/      # Shell logs"
-        echo "        ├── tests/         # Test results" 
+        echo "        ├── tests/         # Test results"
         echo "        └── changes/       # Modifications"
-        echo 
+        echo
         echo "Locate definition file to the definitions directory"
         return 0
     fi

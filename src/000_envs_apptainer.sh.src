@@ -1,6 +1,6 @@
 #!/bin/bash
-# Time-stamp: "2024-12-08 08:18:16 (ywatanabe)"
-# File: ./apptainer_utilities/src/000_envs_apptainer.sh.source
+# Time-stamp: "2024-12-09 03:51:23 (ywatanabe)"
+# File: ./apptainer_utilities/src/000_envs_apptainer.sh.src
 
 ################################################################################
 # Apptainer Environment Configuration
@@ -15,7 +15,7 @@
 # Path settings
 export APPTAINERENV_PATH=$(
     if command -v apptainer >/dev/null 2>&1; then
-        echo "$PATH" | sed "s|$(dirname $(command -v apptainer))||g; s|::*|:|g; s|^:||| s|:$||"
+        echo "$PATH" | sed "s|$(dirname $(command -v apptainer))||g; s|::*|:|g; s|^:||; s|:$||"
     else
         echo "$PATH"
     fi

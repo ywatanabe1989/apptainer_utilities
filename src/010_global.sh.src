@@ -1,6 +1,6 @@
 #!/bin/bash
 # Time-stamp: "2024-12-08 08:18:09 (ywatanabe)"
-# File: ./apptainer_utilities/src/010_global.sh.source
+# File: ./apptainer_utilities/src/010_global.sh.src
 
 show_help() {
     cat << EOF
